@@ -1,2 +1,5 @@
 venv/*
 .idea/*
+base/__pycache__/*
+doctors/__pycache__/*
+reservation/__pycache__/*
