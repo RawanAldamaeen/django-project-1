@@ -14,6 +14,9 @@
           <li><a class="navbar-link" href="{% url 'doctor:register' %}">Doctor Registration</a></li>
           {% if user.is_authenticated %}
             <li class="navbar-brand" >Hi {{user.username}}</li>
+            <li><a href="{% url 'doctor:logout' %}">Logout</a></li>
+          {% else %}
+            <li><a class="navbar-link" href="{% url 'doctor:login' %}">Login</a></li>
           {% endif %}
         </ul>
       </div>

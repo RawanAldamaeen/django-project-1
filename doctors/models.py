@@ -24,11 +24,21 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.is_active = False
         Doctor.objects.create(user=instance)
 
+        # user welcome email
         subject = "Thank you for registering with us"
         message = f'Hi Dr. {instance.username}, thank you for registering in the reservations system. your account ' \
                   f'will be activated soon by the admin.'
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [instance.email, settings.EMAIL_HOST_USER]
+        send_mail(subject, message, email_from, recipient_list)
+
+        # admin activate user request email
+        subject = "New Doctor Account "
+        message = f'Hi admin , there is new doctor registration account /' \
+                  f'need to check and activate /' \
+                  f'username: {instance.username} '
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [settings.EMAIL_HOST_USER]
         send_mail(subject, message, email_from, recipient_list)
 
 

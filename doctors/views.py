@@ -1,6 +1,6 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from .forms import DocForm, DocProfileForm
 from .models import Doctor
@@ -10,7 +10,7 @@ from django.urls import reverse
 
 
 @login_required
-def user_logout(request):  # User logout view
+def doctors_logout(request):  # User logout view
     logout(request)
     return HttpResponseRedirect(reverse('base:index'))
 
@@ -39,4 +39,23 @@ def register(request):
     return render(request, 'doctor/register.html',
                   {'doc_form': doc_form,
                    'doc_profile_form': doc_profile_form, 'registered': registered})
+
+def doctor_login(request):
+    if not request.method == 'POST':
+        return render(request, 'doctor/login.html', {})
+
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(username=username, password=password)
+
+    if not user:
+        print("Someone tried to login and failed.")
+        print("They used username: {} and password: {}".format(username, password))
+        return HttpResponse("Invalid login details given")
+
+    if not user.is_active:
+        return HttpResponse("Your account still inactive, Admin will active it soon.")
+
+    login(request, user)
+    return HttpResponseRedirect(reverse('base:index'))
 
