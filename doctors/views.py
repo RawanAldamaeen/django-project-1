@@ -3,19 +3,20 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from .forms import DocForm, DocProfileForm
-from .models import Doctor
+from base.models import User,Doctor
 
 # Create your views here.
 from django.urls import reverse
 
 
+
 @login_required
-def doctors_logout(request):  # User logout view
+def doctors_logout(request):  # doctor logout view
     logout(request)
     return HttpResponseRedirect(reverse('base:index'))
 
 
-def register(request):
+def register(request):      # doctor registration view
     registered = False
     if request.method == 'POST':
         doc_form = DocForm(data=request.POST)
@@ -23,6 +24,9 @@ def register(request):
         if doc_form.is_valid() and doc_profile_form.is_valid():
             user = doc_form.save()
             user.set_password(user.password)
+            user.is_doctor = True
+            doctor = Doctor()
+            doctor.user= user
             user.doctor.phone = request.POST.get('phone')
             user.doctor.name = request.POST.get('name')
             user.doctor.photo = request.FILES['photo']
@@ -40,7 +44,8 @@ def register(request):
                   {'doc_form': doc_form,
                    'doc_profile_form': doc_profile_form, 'registered': registered})
 
-def doctor_login(request):
+
+def doctor_login(request):  # doctor login view
     if not request.method == 'POST':
         return render(request, 'doctor/login.html', {})
 

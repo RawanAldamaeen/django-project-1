@@ -20,11 +20,13 @@ from django.contrib import admin
 from django.urls import path, include
 from base import views
 from doctors import views
+from patient import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('base.urls', 'base'), namespace="base")),
     url(r'^doctor/', include(('doctors.urls', 'doctors'), namespace="doctors")),
+    url(r'^patient/', include(('patient.urls', 'patient'), namespace="patient")),
 
 ]
 if settings.DEBUG:

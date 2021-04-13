@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'doctors'
+    'base',
+    'doctors',
+    'patient'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,8 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+
+AUTH_USER_MODEL = "base.User"
 
 ROOT_URLCONF = 'reservation.urls'
 
@@ -133,5 +137,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = '****'
-EMAIL_HOST_PASSWORD = '*****'
+EMAIL_HOST_USER = 'rawansd7@gmail.com'
+EMAIL_HOST_PASSWORD = 'griewssfxdcaokiw'

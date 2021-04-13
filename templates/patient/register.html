@@ -1,0 +1,29 @@
+{% extends "base/base.html" %}
+{% block body_block %}
+
+   <div class="container">
+    <div class="jumbotron">
+
+      {% if registered %}
+        <h1>Thank you for registering!</h1>
+      {% else %}
+        <h1>Register Here</h1>
+        <h3>Just fill out the form.</h3>
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ pat_form.as_p }}
+          {{ pat_profile_form.as_p }}
+          <input type="submit" name="" value="Register">
+        </form>
+        <div class="border-top pt-3">
+              <small class="text-muted">
+                  Already Have An Account?<a class="ml-2">Sign In</a>
+              </small>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+
+{% endblock %}
