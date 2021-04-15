@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+{% block body_block %}
+<div class="content-section" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+        <form method="POST" >
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add New Shifts</legend>
+                {{form.as_p}}
+            </fieldset>
+            <div class="form-group">
+                <input class="btn btn-outline-info" type="submit" value="Save" />
+                <input class="btn btn-outline-info" type="submit" name="add_new" value="Save and add another" />
+            </div>
+        </form>
+    </div>
+
+{% endblock body_block %}

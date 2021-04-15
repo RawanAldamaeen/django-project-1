@@ -3,3 +3,5 @@ venv/*
 base/__pycache__/*
 doctors/__pycache__/*
 reservation/__pycache__/*
+shifts/__pycache__/*
+

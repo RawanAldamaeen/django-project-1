@@ -1,0 +1,26 @@
+
+{% extends "base/base.html" %}
+{% block body_block %}
+    <h1> shifts list:</h1>
+    <h5><a href="{% url 'shifts:shift_create' %}">Add New Shift</a></h5>
+    {% for shift in shifts %}
+        {% if shift.doctor_id == user.doctor %}
+        <div class="container">
+           <table class="table">
+               <tbody>
+               <tr>
+                   <td><h2>{{ shift.day }} </h2></td>
+                    {% if not shift.all_day %}
+                   <td><h4>From:   {{shift.start_time}}    To:   {{shift.end_time}}</h4></td>
+                    {% else %}
+                    <td><h4> All Day </h4></td>
+                   {% endif %}
+                   <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'shifts:shift_update' shift.pk %}">Update</a></td>
+                   <td><a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'shifts:shift_delete' shift.pk %}">Delete</a></td>
+               </tr>
+               </tbody>
+           </table>
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endblock body_block %}

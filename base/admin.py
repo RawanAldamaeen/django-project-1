@@ -9,8 +9,7 @@ class DoctorsAdmin(admin.ModelAdmin):
 class PatientsAdmin(admin.ModelAdmin):
     list_display = ('user', 'id')
 
+
 admin.site.register(User)
 admin.site.register(Doctor, DoctorsAdmin)
 admin.site.register(Patient, PatientsAdmin)
-
-
