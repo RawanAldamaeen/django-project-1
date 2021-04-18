@@ -13,6 +13,8 @@
           {% csrf_token %}
           {{ doc_form.as_p }}
           {{ doc_profile_form.as_p }}
+           <label for="specialty" >Specialty :</label>
+            <input type="text" name="specialty">
           <input type="submit" name="" value="Register">
         </form>
         <div class="border-top pt-3">

@@ -1,6 +1,8 @@
+
 from django.db import models
 from base.models import Doctor
 from django.core.validators import RegexValidator
+
 
 time_regex = RegexValidator(regex=r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\s?(?:AM|PM|am|pm)')
 

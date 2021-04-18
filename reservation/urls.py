@@ -21,6 +21,7 @@ from django.urls import path, include
 from base import views
 from doctors import views
 from shifts import views
+from reservations import views
 from patient import views
 
 urlpatterns = [
@@ -29,6 +30,7 @@ urlpatterns = [
     url(r'^doctor/', include(('doctors.urls', 'doctors'), namespace="doctors")),
     url(r'^patient/', include(('patient.urls', 'patient'), namespace="patient")),
     url(r'^shifts/', include(('shifts.urls', 'shifts'), namespace="shifts")),
+    url(r'^reservation/', include(('reservations.urls', 'reservations'), namespace="reservations")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

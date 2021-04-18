@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+{% block body_block %}
+<h1> Doctors:</h1>
+    <div class="search-bar mt-sm-2 mr-2">
+      <form action="{% url 'reservations:patient_search_result' %}" method="get">
+        <input name="query" type="text" placeholder="Search...">
+      </form>
+    </div>
+<div class="container">
+    <div class="row">
+    {% if doctors %}
+        <div class="col-lg-8 mt-3 left">
+            {% for doctor in doctors %}
+              <div class="container">
+                 <table class="table">
+                     <tbody>
+                     <tr>
+                         <td><h2>{{ doctor.name }} </h2></td>
+                         <td><h2>{{ doctor.specialty_id.specialty }} </h2></td>
+                         <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'reservations:reservation_form' doctor.pk %}">Reservation</a></td>
+                     </tr>
+                     </tbody>
+                 </table>
+              </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div>
+            No match result...
+        </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

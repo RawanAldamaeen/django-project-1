@@ -14,4 +14,12 @@
         </form>
     </div>
 
+<script>
+    $('#id_all_day').click(function () {
+      var optionSelected = $('#id_all_day').is(':checked');
+      $('#id_start_time').prop('disabled' , optionSelected);
+      $('#id_end_time').prop('disabled', optionSelected);
+
+    });
+  </script>
 {% endblock body_block %}

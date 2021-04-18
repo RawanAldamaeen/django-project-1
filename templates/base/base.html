@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Home</title>
     <!-- Latest compiled and minified CSS -->
+      <script type="text/javascript" language="Javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
@@ -11,18 +12,20 @@
       <div class="container">
         <ul class="nav navbar-nav">
           <li><a class="navbar-brand" href="{% url 'base:index' %}">Reservations System</a></li>
-          <li><a class="navbar-link" href="{% url 'doctor:register' %}">Doctor Registration</a></li>
           {% if user.is_authenticated %}
           {% if user.is_doctor %}
             <li class="navbar-brand" >Hi Dr.{{user.username}}</li>
             <li><a href="{% url 'doctor:logout' %}">Logout</a></li>
             <li><a href="{% url 'shifts:shifts_list' %}">Shifts</a></li>
-          {% else %}
+            <li><a href="{% url 'reservations:reservations_list' %}">Reservations</a></li>
+          {% elif user.is_patient %}
             <li class="navbar-brand" >Hi {{user.username}}</li>
+            <li><a href="{% url 'reservations:patient_reservations_list' %}">My Reservations</a></li>
             <li><a href="{% url 'patient:logout' %}">Logout</a></li>
           {% endif %}
           {% else %}
-            <li><a class="navbar-link" href="{% url 'doctor:login' %}">Login</a></li>
+            <li><a class="navbar-link" href="{% url 'doctor:login' %}">Doctor Login</a></li>
+            <li><a class="navbar-link" href="{% url 'patient:login' %}">Patient Login</a></li>
           {% endif %}
         </ul>
       </div>

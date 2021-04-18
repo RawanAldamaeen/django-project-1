@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+{% block body_block %}
+<h1> Reservations:</h1>
+    <div class="search-bar mt-sm-2 mr-2">
+      <form action="{% url 'reservations:doc_search_result' %}" method="get">
+        <input name="query" type="text" placeholder="Search...">
+      </form>
+    </div>
+<div class="container">
+    <div class="row">
+    {% if reservations %}
+        <div class="col-lg-8 mt-3 left">
+        {% for reservation in reservations %}
+        <div class="container">
+           <table class="table">
+               <tbody>
+               <tr>
+                   <td><h2>{{ reservation.patient_id.name }} </h2></td>
+                   <td><h2>{{ reservation.status }} </h2></td>
+                   {% if reservation.status == 'new' %}
+                   <td>
+                       <form method="POST" action="{% url 'reservations:status_change' reservation.patient_id.pk %}">
+                                       {% csrf_token %}
+                            <input class="btn btn-outline-info" name="confirm" type='submit' value="Confirm" />
+                            <input class="btn btn-outline-info" name="cancel" type='submit' value='Cancel' />
+                       </form>
+                   </td>
+                   {% elif reservation.status == "confirm" %}
+                   <td>
+                       <form method="POST" action="{% url 'reservations:status_change' reservation.patient_id.pk %}">
+                                       {% csrf_token %}
+                   <input class="btn btn-outline-info" name="cancel" type='submit' value='Cancel' />
+                   <input class="btn btn-outline-info" name="complete" type='submit' value='Complete' />
+                       </form>
+                   </td>
+                   {% endif %}
+               </tr>
+               </tbody>
+           </table>
+        </div>
+    {% endfor %}
+        </div>
+    {% else %}
+        <div>
+            No match result...
+        </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -102,6 +102,9 @@ def patient_login(request):     # patient login view
     if not user.is_active:
         return HttpResponse("Your account still inactive,check your email for activate email")
 
+    if not user.is_patient:
+        return HttpResponse("<h3>This page for patient login<h3>")
+
     login(request, user)
-    return HttpResponseRedirect(reverse('base:index'))
+    return HttpResponseRedirect(reverse('reservations:doctors_list'))
 

@@ -12,6 +12,10 @@ class User(AbstractUser):
     is_patient = models.BooleanField(default=False)
 
 
+class Specialty(models.Model):
+    specialty = models.CharField(max_length=100)
+
+
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(unique=True, max_length=100)
@@ -19,6 +23,7 @@ class Doctor(models.Model):
     photo = models.ImageField(upload_to='doctors/dr_pics', blank=True, default='')
     degree_copy = models.ImageField(upload_to='doctors/dr_degree_copy', default=' ')
     gender = models.CharField(choices=[('M', 'Male'), ('F', 'Female')], default='None', max_length=32)
+    specialty_id = models.ForeignKey(Specialty, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user.username} Profile'
