@@ -3,3 +3,9 @@ venv/*
 base/__pycache__/*
 doctors/__pycache__/*
 reservation/__pycache__/*
+
+media/doctors/dr_degree_copy/*
+media/doctors/dr_pics/*
+media/patient/patient_pics/*
+
+!media/patient/patient_pics/.gitkeep

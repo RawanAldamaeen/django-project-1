@@ -1,24 +1,41 @@
 <!DOCTYPE html>
+{% load static i18n %}
+
 <html>
   <head>
     <meta charset="utf-8">
     <title>Home</title>
     <!-- Latest compiled and minified CSS -->
+      <script type="text/javascript" language="Javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <ul class="nav navbar-nav">
-          <li><a class="navbar-brand" href="{% url 'base:index' %}">Reservations System</a></li>
-          <li><a class="navbar-link" href="{% url 'doctor:register' %}">Doctor Registration</a></li>
+          <li><a class="navbar-brand" href="{% url 'base:index' %}" >{% trans 'Reservations System' %}</a></li>
           {% if user.is_authenticated %}
-            <li class="navbar-brand" >Hi {{user.username}}</li>
+          {% if user.is_doctor %}
+            <li class="navbar-brand" >{% trans 'Hi' %} Dr.{{user.username}}</li>
+          {% endif %}
           {% endif %}
         </ul>
       </div>
      </nav>
-
+    <div>
+      <form action="{% url 'change_language' %}" method="post">
+        {% csrf_token %}
+        <select name="language">
+          {% get_available_languages as LANGUAGES %}
+          {% for language in LANGUAGES %}
+          <option value="{{ language.0 }}" {% if language.0 == LANGUAGE_CODE %} selected{% endif %}>
+              {{ language.0|language_name_local }} ({{ language.0 }})
+          </option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="Change language">
+      </form>
+    </div>
     <div class="container">
     {% block body_block %}
     {% endblock %}
