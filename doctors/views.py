@@ -49,13 +49,13 @@ def register(request):      # Doctor registration request handler
                                                     'registered': registered})
 
 
-class LoginView(FormView):  # Doctors registration view
+class LoginView(FormView):  # Doctors login view
     template_name = 'doctor/login.html'
     form_class = LoginForm
 
 
 @require_http_methods(["POST"])
-def doctor_login(request):
+def doctor_login(request):      # Doctor login request handler
 
     username = request.POST.get('username')
     password = request.POST.get('password')
