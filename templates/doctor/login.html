@@ -8,11 +8,8 @@
       <h1>{% trans 'Login here' %}</h1>
       <form method="post" action="{% url 'doctor:login' %}">
           {% csrf_token %}
-          <label for="username">Username: </label>
-          <input type="text" name="username" placeholder="Username">
-          <label for="password">Password: </label>
-          <input type="password" name="password" placeholder="Password">
-          <input type="submit" name="" value="Login">
+            {{ form.as_p }}
+                    <input type="submit" name="" value="Login">
       </form>
         <div class="border-top pt-3">
             <small class="text-muted">

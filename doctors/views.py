@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import FormView
 from django.views.decorators.http import require_http_methods
 
-from .forms import DocForm
+from .forms import DocForm, LoginForm
 from base.models import Doctor, Specialty, User
 
 # Create your views here.
@@ -47,6 +47,11 @@ def register(request):      # Doctor registration request handler
 
     return render(request, 'doctor/register.html', {'form': form,
                                                     'registered': registered})
+
+
+class LoginView(FormView):  # Doctors registration view
+    template_name = 'doctor/login.html'
+    form_class = LoginForm
 
 
 @require_http_methods(["POST"])

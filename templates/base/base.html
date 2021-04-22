@@ -18,9 +18,9 @@
           {% if user.is_doctor %}
             <li class="navbar-brand" >{% trans 'Hi' %} Dr.{{user.username}}</li>
             <li><a class="navbar-link" href="{% url 'doctor:logout' %}">Logout</a></li>
-          {% endif %}
           {% else %}
-            <li><a class="navbar-link" href="{% url 'doctor:login' %}">Doctor Login</a></li>
+            <li><a class="navbar-link" href="{% url 'doctor:login_view' %}">Doctor Login</a></li>
+          {% endif %}
           {% endif %}
         </ul>
       </div>

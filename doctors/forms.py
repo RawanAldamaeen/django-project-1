@@ -49,3 +49,14 @@ class DocForm(forms.ModelForm):
             raise forms.ValidationError("We have a user with this user phone")
 
         return phone
+
+
+class LoginForm(forms.ModelForm):
+
+    username = forms.CharField(min_length=8)
+    password = forms.CharField(widget=forms.PasswordInput(),
+                               validators=[validate_password])
+
+    class Meta:
+        model = User
+        fields = ('username', 'password')
