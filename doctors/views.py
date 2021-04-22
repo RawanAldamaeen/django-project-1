@@ -34,14 +34,13 @@ def register(request):      # Doctor registration request handler
         user.username = request.POST.get('username')
         user.set_password(request.POST.get('password'))
         user.is_doctor = True
-        user.is_active= False
+        user.is_active = False
         user.save()
         doctor = Doctor()
         doctor = form.save(commit=False)
         doctor.user = user
         doctor.specialty_id = Specialty.objects.get(id=s)
         doctor.save()
-
         registered = True
     else:
         print(form.errors)

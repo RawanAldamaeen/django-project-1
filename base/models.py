@@ -1,4 +1,5 @@
-# from django.conf import settings
+
+from django.conf import settings
 from django.core import validators
 from django.core.mail import send_mail
 from django.core.validators import RegexValidator
@@ -9,8 +10,6 @@ from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext as _
 from django.utils import translation
-
-from reservation import settings
 
 
 class User(AbstractUser):
@@ -27,7 +26,7 @@ class Specialty(models.Model):
 
 
 class Doctor(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(unique=True, max_length=100)
     phone = models.IntegerField(unique=True)
     photo = models.ImageField(upload_to='doctors/dr_pics', blank=True, default='')
@@ -59,3 +58,4 @@ def new_doctor_account_emails(sender, instance, **kwargs):
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [settings.EMAIL_HOST_USER]
         send_mail(subject, message, email_from, recipient_list)
+

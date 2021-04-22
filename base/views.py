@@ -23,3 +23,4 @@ def change_language(request):  # change language drop list
             response = HttpResponseRedirect(redirect_path)
             response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
     return response
+
