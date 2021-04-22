@@ -1,10 +1,11 @@
 {% extends 'base/base.html' %}
+{% load i18n %}
 {% block body_block %}
 
 
 <div class="container">
     <div class="jumbotron">
-      <h1>Login here</h1>
+      <h1>{% trans 'Login here' %}</h1>
       <form method="post" action="{% url 'doctor:login' %}">
           {% csrf_token %}
           <label for="username">Username: </label>
@@ -15,7 +16,7 @@
       </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{% url 'doctor:register' %}">Sign Up Now</a>
+                {% trans 'Need An Account?' %} <a class="ml-2" href="{% url 'doctor:register' %}">{% trans 'Sign Up Now' %}</a>
             </small>
         </div>
     </div>

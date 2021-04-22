@@ -6,9 +6,9 @@
 
 <div class="container">
   <div class="jumbotron">
-    <h1>Reservations System</h1>
-      <h4> New Doctor: </h4>
-      <a href="{% url 'doctor:register' %}">Doctor Registration</a>
+    <h1>{% trans 'Reservations System' %}</h1>
+      <h4>{% trans 'New Doctor:' %}</h4>
+      <a href="{% url 'doctor:registration_view' %}">{% trans 'Doctor Registration' %}</a>
   </div>
 </div>
 
