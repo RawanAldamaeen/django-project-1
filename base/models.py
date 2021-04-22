@@ -1,10 +1,14 @@
 from django.conf import settings
+from django.core import validators
 from django.core.mail import send_mail
+from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import signals
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext as _
+from django.utils import translation
 
 
 class User(AbstractUser):
@@ -12,13 +16,22 @@ class User(AbstractUser):
     is_patient = models.BooleanField(default=False)
 
 
+class Specialty(models.Model):
+    specialty = models.CharField(max_length=100)
+    specialty_ar = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.specialty
+
+
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(unique=True, max_length=100)
-    phone = models.IntegerField(unique=True, default='00000000')
+    phone = models.IntegerField(unique=True)
     photo = models.ImageField(upload_to='doctors/dr_pics', blank=True, default='')
     degree_copy = models.ImageField(upload_to='doctors/dr_degree_copy', default=' ')
     gender = models.CharField(choices=[('M', 'Male'), ('F', 'Female')], default='None', max_length=32)
+    specialty_id = models.ForeignKey(Specialty, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -27,7 +40,7 @@ class Doctor(models.Model):
 class Patient(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(unique=True, max_length=100)
-    phone = models.IntegerField(unique=True, default='00000000')
+    phone = models.IntegerField(unique=True)
     photo = models.ImageField(upload_to='patient/patient_pics', blank=True, default='')
     gender = models.CharField(choices=[('M', 'Male'), ('F', 'Female')], default='None', max_length=32)
 
@@ -36,45 +49,26 @@ class Patient(models.Model):
 
 
 @receiver(signals.post_save, sender=User)
-def create_doctor_profile(sender, instance, created, **kwargs):
-    if created:
-        instance.is_active = False
-        if instance.is_doctor:
-            Doctor.objects.create(user=instance)
-
-            # doctor welcome email
-            subject = "Thank you for registering with us"
-            message = f'Hi Dr. {instance.username}, thank you for registering in the reservations system. your account ' \
-                      f'will be activated soon by the admin.'
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [instance.email, settings.EMAIL_HOST_USER]
-            send_mail(subject, message, email_from, recipient_list)
-
-            # admin activate doctor account request email
-            subject = "New Doctor Account "
-            message = f'Hi admin , there is new doctor registration account /' \
-                      f'need to check and activate /' \
-                      f'username: {instance.username} '
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [settings.EMAIL_HOST_USER]
-            send_mail(subject, message, email_from, recipient_list)
-
-
-@receiver(signals.post_save, sender=User)
-def save_doctor_profile(sender, instance, **kwargs):
+def new_doctor_account_emails(sender, instance, **kwargs):
     if instance.is_doctor:
-        instance.doctor.save()
+        # Doctor welcome email
+        lang = translation.get_language()
+        translation.activate(lang)
+        subject = _("Thank you for registering with us")
+        message = _(f'Hi Dr. %(username)s, thank you for registering in the reservations system. your account will be activated soon by the admin.') % {'username': instance.username}
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [instance.email, settings.EMAIL_HOST_USER]
+        send_mail(subject, message, email_from, recipient_list)
+
+        # Admin activate doctor account request email
+        lang = translation.get_language()
+        translation.activate(lang)
+        subject = _("New Doctor Account ")
+        message = _(f'Hi admin , there is new doctor registration account need to check and activate / username: %(username)s') % {'username': instance.username}
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [settings.EMAIL_HOST_USER]
+        send_mail(subject, message, email_from, recipient_list)
 
 
-@receiver(signals.post_save, sender=User)
-def create_patient_profile(sender, instance, created, **kwargs):
-    if created:
-        instance.is_active = False
-        if instance.is_patient:
-            Patient.objects.create(user=instance)
 
 
-@receiver(signals.post_save, sender=User)
-def save_patient_profile(sender, instance, **kwargs):
-    if instance.is_patient:
-        instance.patient.save()
