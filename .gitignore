@@ -1,5 +1,11 @@
 venv/*
 .idea/*
+
 base/__pycache__/*
 doctors/__pycache__/*
 reservation/__pycache__/*
+patient/__pycache__/*
+
+patient/migrations/__pycache__/*
+doctors/migrations/__pycache__/*
+base/migrations/__pycache__/*
