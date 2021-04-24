@@ -1,8 +1,9 @@
 
 {% extends "base/base.html" %}
+{% load i18n %}
 {% block body_block %}
-    <h1> shifts list:</h1>
-    <h5><a href="{% url 'shifts:shift_create' %}">Add New Shift</a></h5>
+    <h1>{% trans 'shifts list:' %}</h1>
+    <h5><a href="{% url 'shifts:shift_create_view' %}">{% trans 'Add New Shift' %}</a></h5>
     {% for shift in shifts %}
         {% if shift.doctor_id == user.doctor %}
         <div class="container">
@@ -15,8 +16,8 @@
                     {% else %}
                     <td><h4> All Day </h4></td>
                    {% endif %}
-                   <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'shifts:shift_update' shift.pk %}">Update</a></td>
-                   <td><a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'shifts:shift_delete' shift.pk %}">Delete</a></td>
+                   <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'shifts:shift_update' shift.pk %}">{% trans 'Update' %}</a></td>
+                   <td><a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'shifts:shift_delete' shift.pk %}">{% trans 'Delete' %}</a></td>
                </tr>
                </tbody>
            </table>

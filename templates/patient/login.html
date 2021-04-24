@@ -1,21 +1,19 @@
 {% extends 'base/base.html' %}
+{% load i18n %}
 {% block body_block %}
 
 
 <div class="container">
     <div class="jumbotron">
-      <h1>Login here</h1>
+      <h1>{% trans 'Login here' %}</h1>
       <form method="post" action="{% url 'patient:login' %}">
           {% csrf_token %}
-          <label for="username">Username: </label>
-          <input type="text" name="username" placeholder="Username">
-          <label for="password">Password: </label>
-          <input type="password" name="password" placeholder="Password">
+          {{ form.as_p }}
           <input type="submit" name="" value="Login">
       </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{% url 'patient:register' %}">Sign Up Now</a>
+                {% trans 'Need An Account?' %} <a class="ml-2" href="{% url 'patient:register' %}">{% trans 'Sign Up Now' %}</a>
             </small>
         </div>
     </div>

@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load static i18n %}
+
 <html>
   <head>
     <meta charset="utf-8">
@@ -11,25 +13,40 @@
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
         <ul class="nav navbar-nav">
-          <li><a class="navbar-brand" href="{% url 'base:index' %}">Reservations System</a></li>
+          <li><a class="navbar-brand" href="{% url 'base:index' %}" >{% trans 'Reservations System' %}</a></li>
           {% if user.is_authenticated %}
           {% if user.is_doctor %}
-            <li class="navbar-brand" >Hi Dr.{{user.username}}</li>
-            <li><a href="{% url 'doctor:logout' %}">Logout</a></li>
-            <li><a href="{% url 'shifts:shifts_list' %}">Shifts</a></li>
-            <li><a href="{% url 'reservations:reservations_list' %}">Reservations</a></li>
-          {% elif user.is_patient %}
-            <li class="navbar-brand" >Hi {{user.username}}</li>
-            <li><a href="{% url 'reservations:patient_reservations_list' %}">My Reservations</a></li>
-            <li><a href="{% url 'patient:logout' %}">Logout</a></li>
-          {% endif %}
+            <li class="navbar-brand" >{% trans 'Hi' %} Dr.{{user.username}}</li>
+            <li><a href="{% url 'doctor:logout' %}">{% trans 'Logout' %}</a></li>
+            <li><a href="{% url 'shifts:shifts_list' %}">{% trans 'Shifts' %}</a></li>
+            <li><a href="{% url 'reservations:reservations_list' %}">{% trans 'Reservations' %}</a></li>
+            {% elif user.is_patient %}
+            <li class="navbar-brand" >{% trans 'Hi' %} {{user.username}}</li>
+            <li><a href="{% url 'reservations:patient_reservations_list' %}">{% trans 'My Reservations' %}</a></li>
+            <li><a class="navbar-link" href="{% url 'patient:logout' %}">{% trans 'Logout' %}</a></li>
           {% else %}
-            <li><a class="navbar-link" href="{% url 'doctor:login' %}">Doctor Login</a></li>
-            <li><a class="navbar-link" href="{% url 'patient:login' %}">Patient Login</a></li>
+            <li><a class="navbar-link" href="{% url 'doctor:login_view' %}">{% trans 'Doctor Login' %}</a></li>
+            <li><a class="navbar-link" href="{% url 'patient:login_view' %}">{% trans 'Patient Login' %}</a></li>
+          {% endif %}
           {% endif %}
         </ul>
       </div>
      </nav>
+
+     <div>
+      <form action="{% url 'change_language' %}" method="post">
+        {% csrf_token %}
+        <select name="language">
+          {% get_available_languages as LANGUAGES %}
+          {% for language in LANGUAGES %}
+          <option value="{{ language.0 }}" {% if language.0 == LANGUAGE_CODE %} selected{% endif %}>
+              {{ language.0|language_name_local }} ({{ language.0 }})
+          </option>
+          {% endfor %}
+        </select></br>
+        <input type="submit" value="Change language">
+      </form>
+    </div>
 
     <div class="container">
     {% block body_block %}

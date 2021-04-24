@@ -1,25 +1,23 @@
 {% extends "base/base.html" %}
+{% load i18n %}
 {% block body_block %}
 
-   <div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
     <div class="jumbotron">
 
       {% if registered %}
-        <h1>Thank you for registering!</h1>
+        <h1>{% trans 'Thank you for registering!' %}</h1>
       {% else %}
-        <h1>Register Here</h1>
-        <h3>Just fill out the form.</h3>
-        <form enctype="multipart/form-data" method="POST">
+        <h1>{% trans 'Register Here' %}</h1>
+        <h3>{% trans 'Just fill out the form.' %}</h3>
+        <form enctype="multipart/form-data" method="POST" action="{% url 'doctor:register' %}">
           {% csrf_token %}
-          {{ doc_form.as_p }}
-          {{ doc_profile_form.as_p }}
-           <label for="specialty" >Specialty :</label>
-            <input type="text" name="specialty">
-          <input type="submit" name="" value="Register">
+            {{ form.as_p }}
+            <input type="submit" name="" value="Register">
         </form>
         <div class="border-top pt-3">
               <small class="text-muted">
-                  Already Have An Account?<a class="ml-2">Sign In</a>
+                  {% trans 'Already Have An Account?' %}<a class="ml-2">{% trans 'Sign In' %}</a>
               </small>
         </div>
       {% endif %}

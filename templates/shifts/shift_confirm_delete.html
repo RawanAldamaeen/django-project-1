@@ -1,15 +1,16 @@
 {% extends "base/base.html" %}
+{% load i18n %}
 {% block body_block %}
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">shift delete</legend>
-                <h2>Are you sure you want to delete the shift on "{{ object.day }}"</h2>
+                <legend class="border-bottom mb-4">{% trans 'shift delete' %}</legend>
+                <h2>{% trans 'Are you sure you want to delete the shift on'%} "{{ object.day }}"</h2>
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-outline-secondary" href="{% url 'shifts:shift_detail' object.id %}">Cancel</a>
+                <button class="btn btn-outline-danger" type="submit">{% trans 'Yes, Delete' %}</button>
+                <a class="btn btn-outline-secondary" href="{% url 'shifts:shifts_list' %}">{% trans 'Cancel' %}</a>
             </div>
         </form>
     </div>
