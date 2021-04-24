@@ -1,7 +1,22 @@
 venv/*
 .idea/*
+
 base/__pycache__/*
 doctors/__pycache__/*
 reservation/__pycache__/*
 shifts/__pycache__/*
+patient/__pycache__/*
 
+patient/migrations/__pycache__/*
+doctors/migrations/__pycache__/*
+base/migrations/__pycache__/*
+shifts/migrations/__pycache__/*
+
+
+media/doctors/dr_degree_copy/*
+media/doctors/dr_pics/*
+media/patient/patient_pics/*
+
+!media/doctors/dr_pics/.gitkeep
+!media/doctors/dr_degree_copy/.gitkeep
+!media/patient/patient_pics/.gitkeep
