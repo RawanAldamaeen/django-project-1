@@ -7,7 +7,7 @@ class DateTimeInput(forms.DateTimeInput):
     input_type = 'datetime-local'
 
 
-class NewShifts(forms.ModelForm):
+class NewReservation(forms.ModelForm):
     time = forms.DateTimeField(widget=DateTimeInput)
 
     class Meta:

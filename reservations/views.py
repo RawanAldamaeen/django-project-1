@@ -2,14 +2,15 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
 from django.views.generic import (
     ListView,
     DetailView,
-    CreateView,
+    CreateView, FormView,
 )
 from .models import Reservation
 from base.models import Doctor, Patient
-
+from .forms import NewReservation
 
 class DoctorsListView(ListView):  # Doctors list view
     model = Doctor
@@ -30,28 +31,38 @@ class PatientReservationsListView(ListView):  # Patient reservations list view
     template_name = 'reservations/patient_reservations_list.html'
 
 
+class ReservationCreateView(FormView):
+    template_name = 'reservations/reservation_form.html'
+    form_class = NewReservation
+
+
+@require_http_methods(["POST"])
 def rservationsCreate(request, doctor_id):  # Reservations create view
-    if request.method == 'POST':
-        patient_id = request.user.patient
-        time = request.POST.get('time')
-        doctor = Doctor.objects.get(id=doctor_id)
-        status = 'new'
-        reservation = Reservation.objects.create(patient_id=patient_id, time=time, doctor_id=doctor, status=status)
-        return redirect('reservation:doctors_list')
-    return render(request, 'reservations/reservation_form.html')
-
-
-def reservationStatusChange(request, reservation_id):  # Reservation change status view
-    if request.method == 'POST':
-        reservation = Reservation.objects.get(id=reservation_id)
-        if 'confirm' in request.POST:
-            reservation.status = "confirm"
-        elif 'cancel' in request.POST:
-            reservation.status = 'canceled'
-        elif 'complete' in request.POST:
-            reservation.status = 'closed'
-
+    form = NewReservation(data=request.POST)
+    doctor = Doctor.objects.get(id=doctor_id)
+    if form.is_valid():
+        reservation = form.save(commit=False)
+        reservation.patient_id = request.user.patient
+        reservation.doctor_id = doctor
+        reservation.status = 'new'
         reservation.save()
+
+        redirect('reservation:patient_reservations_list')
+    return render(request, 'reservations/reservation_form.html', {'form': form, 'doctor': doctor})
+
+
+@require_http_methods(["POST"])
+def reservationStatusChange(request, reservation_id):  # Reservation change status view
+
+    reservation = Reservation.objects.get(id=reservation_id)
+    if 'confirm' in request.POST:
+        reservation.status = "confirm"
+    elif 'cancel' in request.POST:
+        reservation.status = 'canceled'
+    elif 'complete' in request.POST:
+        reservation.status = 'closed'
+
+    reservation.save()
     return redirect('reservations:reservations_list')
 
 

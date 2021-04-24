@@ -49,16 +49,16 @@ def register(request):  # patient registration request handler
         registered = True
 
         # patient activation email
-        current_site = get_current_site(request)
-        subject = 'Activate Your Account'
-        message = render_to_string('patient/account_activation_email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': account_activation_token.make_token(user),
-        })
-
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+        # current_site = get_current_site(request)
+        # subject = 'Activate Your Account'
+        # message = render_to_string('patient/account_activation_email.html', {
+        #     'user': user,
+        #     'domain': current_site.domain,
+        #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        #     'token': account_activation_token.make_token(user),
+        # })
+        #
+        # send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
 
     else:
         print(form.errors)
@@ -86,7 +86,7 @@ def activate(request, uidb64, token):  # patient activation check
 
 
 class LoginView(FormView):  # Patient login view
-    template_name = 'doctor/login.html'
+    template_name = 'patient/login.html'
     form_class = LoginForm
 
 

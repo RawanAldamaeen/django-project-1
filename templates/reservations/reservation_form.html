@@ -1,12 +1,10 @@
 {% extends "base/base.html" %}
 {% block body_block %}
 <div class="content-section" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-        <form method="POST">
+        <form method="POST" action="{% url 'reservation:reservation_form' doctor.id%}">
             <h2>{{ user.doctor.name }} </h2>
             {% csrf_token %}
-            <legend class="border-bottom mb-4">New Reservation</legend>
-            <label for="time" >Choose Date and Time :</label>
-            <input type="datetime-local" name="time">
+            {{ form.as_p }}
             <div class="form-group">
                 <input class="btn btn-outline-info" type="submit" value="Save" />
             </div>
