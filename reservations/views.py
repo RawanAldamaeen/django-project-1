@@ -12,6 +12,7 @@ from .models import Reservation
 from base.models import Doctor, Patient
 from .forms import NewReservation
 
+
 class DoctorsListView(ListView):  # Doctors list view
     model = Doctor
     context_object_name = 'doctors'
@@ -31,24 +32,18 @@ class PatientReservationsListView(ListView):  # Patient reservations list view
     template_name = 'reservations/patient_reservations_list.html'
 
 
-class ReservationCreateView(FormView):
-    template_name = 'reservations/reservation_form.html'
-    form_class = NewReservation
-
-
-@require_http_methods(["POST"])
 def rservationsCreate(request, doctor_id):  # Reservations create view
+    print(request.POST)
     form = NewReservation(data=request.POST)
-    doctor = Doctor.objects.get(id=doctor_id)
-    if form.is_valid():
-        reservation = form.save(commit=False)
-        reservation.patient_id = request.user.patient
-        reservation.doctor_id = doctor
-        reservation.status = 'new'
-        reservation.save()
-
-        redirect('reservation:patient_reservations_list')
-    return render(request, 'reservations/reservation_form.html', {'form': form, 'doctor': doctor})
+    doctor = Doctor.objects.get(id= doctor_id)
+    if request.method == "POST":
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.patient_id = request.user.patient
+            reservation.doctor_id = doctor
+            reservation.status = 'new'
+            reservation.save()
+    return render(request, 'reservations/reservation_form.html', {'form': form})
 
 
 @require_http_methods(["POST"])
