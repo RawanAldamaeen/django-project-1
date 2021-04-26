@@ -5,6 +5,15 @@
             <h2>{{ user.doctor.name }} </h2>
             {% csrf_token %}
              {{ form.as_p }}
+               {% for message in messages %}
+
+                    <div class="alert alert-success">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+                        {{ message }}
+
+                    </div>
+            {% endfor %}
             <div class="form-group">
                 <input class="btn btn-outline-info" type="submit" value="Save" />
             </div>

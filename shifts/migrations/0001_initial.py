@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('all_day', models.BooleanField(default=False)),
                 ('start_time', models.CharField(blank=True, default=' ', max_length=20, validators=[django.core.validators.RegexValidator(regex='^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\\s?(?:AM|PM|am|pm)')])),
                 ('end_time', models.CharField(blank=True, default=' ', max_length=20, validators=[django.core.validators.RegexValidator(regex='^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\\s?(?:AM|PM|am|pm)')])),
-                ('day', models.CharField(choices=[('Sun', 'Sunday'), ('Mon', 'Monday'), ('Tue', 'Tuesday'), ('Wen', 'Wednesday'), ('Thu', 'Thursday'), ('Fri', 'Friday'), ('Sat', 'Saturday')], default=' ', max_length=10)),
+                ('day', models.CharField(choices=[('Sunday', 'Sunday'), ('Monday', 'Monday'), ('Tuesday', 'Tuesday'), ('Wednesday', 'Wednesday'), ('Thursday', 'Thursday'), ('Friday', 'Friday'), ('Saturday', 'Saturday')],  default=' ', max_length=10)),
                 ('doctor_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='base.doctor')),
             ],
         ),

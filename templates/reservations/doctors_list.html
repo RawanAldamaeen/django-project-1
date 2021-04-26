@@ -13,7 +13,7 @@
                <tr>
                    <td><h2>{{ doctor.name }} </h2></td>
                    <td><h2>{{ doctor.specialty_id.specialty }} </h2></td>
-                   <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'reservations:reservation_form' doctor.pk %}">Reservation</a></td>
+                   <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'reservations:reservation_form' doctor.id %}">Reservation</a></td>
                </tr>
                </tbody>
            </table>

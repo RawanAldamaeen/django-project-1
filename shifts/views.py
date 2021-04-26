@@ -26,7 +26,6 @@ class ShiftsFormView(FormView):     # Create new shift view
 @require_http_methods(["POST"])
 def shifts_create(request):  # Create new Shift request handler
     form = NewShifts(data=request.POST)
-
     if form.is_valid():
         shift = form.save(commit=False)
         shift.doctor_id = request.user.doctor
