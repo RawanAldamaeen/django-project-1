@@ -36,58 +36,62 @@ class PatientReservationsListView(ListView):  # Patient reservations list view
     template_name = 'reservations/patient_reservations_list.html'
 
 
+@require_http_methods(["POST"])
 def rservationsCreate(request, doctor_id):  # Reservations create view
 
     form = NewReservation(data=request.POST)
     doctor = Doctor.objects.get(id=doctor_id)
-    if request.method == "POST":
-        if form.is_valid():
-            reservation = form.save(commit=False)
-            reservation.patient_id = request.user.patient
-            reservation.doctor_id = doctor
 
-            # Check doctor available day
-            day = datetime.strftime(reservation.date, "%A")
-            doctor_shifts = get_object_or_None(Shifts, day=day, doctor_id=doctor)
-            if doctor_shifts is None:
-                messages.error(request, 'Doctor is unavailable on this day, please choose another day')
+    if not form.is_valid():
+        print(form.errors)
+        return redirect('/reservation/')
+
+    reservation = form.save(commit=False)
+    reservation.patient_id = request.user.patient
+    reservation.doctor_id = doctor
+
+    # Check doctor available day
+    day = datetime.strftime(reservation.date, "%A")
+    doctor_shifts = get_object_or_None(Shifts, day=day, doctor_id=doctor)
+    if doctor_shifts is None:
+        messages.error(request, 'Doctor is unavailable on this day, please choose another day')
+        return redirect(request.path)
+
+    # Check doctor available time
+    start = datetime.strptime(doctor_shifts.start_time, '%I:%M %p')
+    print(start.time())
+    end = datetime.strptime(doctor_shifts.end_time, '%I:%M %p')
+    print(end.time())
+    reservations = Reservation.objects.filter(doctor_id=doctor)
+    for x in reservations:
+        free = True
+        while start < end:
+            # Check the time of the reservation in the shifts range
+            if x.time < start.time() or x.time > end.time():
+                print(x.time)
+                free = False
+                messages.error(request, 'Doctor is unavailable on this time, please choose another time')
                 return redirect(request.path)
+                break
+            # Check if the time of the reservations isn't conflict with other reservations
+            if x.time == reservation.time and x.status == 'confirm':
+                free = False
+                messages.error(request, 'Doctor is unavailable on this time, please choose another hour')
+                return redirect(request.path)
+                break
+            start += timedelta(hours=1)
 
-            # Check doctor available time
-            start = datetime.strptime(doctor_shifts.start_time, '%I:%M %p')
-            print(start.time())
-            end = datetime.strptime(doctor_shifts.end_time, '%I:%M %p')
-            print(end.time())
-            reservations = Reservation.objects.filter(doctor_id=doctor)
-            for x in reservations:
-                free = True
-                while start < end:
-                    # Check the time of the reservation in the shifts range
-                    if x.time < start.time() or x.time > end.time():
-                        print(x.time)
-                        free = False
-                        messages.error(request, 'Doctor is unavailable on this time, please choose another time')
-                        return redirect(request.path)
-                        break
-                    # Check if the time of the reservations isn't conflict with other reservations
-                    if x.time == reservation.time and x.status == 'confirm':
-                        free = False
-                        messages.error(request, 'Doctor is unavailable on this time, please choose another hour')
-                        return redirect(request.path)
-                        break
-                    start += timedelta(hours=1)
+    if free is True:
+        print('accepted')
+        reservation.status = 'new'
+        reservation.save()
+        # Doctor New Reservation notify email
+        subject = f'New Reservation for {reservation.patient_id.name}'
+        message = f'Hello Dr. {reservation.doctor_id.name}' \
+                  f'THere is New reservation on {reservation.date}, at {reservation.time} for patinent : {reservation.patient_id.name},' \
+                  f' go to your Reservations and take action with it'
 
-            if free is True:
-                print('accepted')
-                reservation.status = 'new'
-                reservation.save()
-                # Doctor New Reservation notify email
-                subject = f'New Reservation for {reservation.patient_id.name}'
-                message = f'Hello Dr. {reservation.doctor_id.name}' \
-                          f'THere is New reservation on {reservation.date}, at {reservation.time} for patinent : {reservation.patient_id.name},' \
-                          f' go to your Reservations and take action with it'
-
-                send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.doctor_id.user.email])
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.doctor_id.user.email])
 
     return render(request, 'reservations/reservation_form.html', {'form': form})
 
