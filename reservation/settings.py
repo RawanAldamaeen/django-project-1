@@ -16,6 +16,8 @@ TEMPLATE_DIR = Path.joinpath(BASE_DIR, 'templates')
 STATIC_DIR = Path.joinpath(BASE_DIR, 'static')
 MEDIA_DIR = Path.joinpath(BASE_DIR, 'media')
 
+
+# Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
 
@@ -23,6 +25,7 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!

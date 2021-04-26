@@ -8,6 +8,7 @@ doctors/__pycache__/*
 reservations/__pycache__/*
 shifts/__pycache__/*
 patient/__pycache__/*
+doctors/models/__pycache__/
 
 patient/migrations/__pycache__/*
 doctors/migrations/__pycache__/*
@@ -26,3 +27,4 @@ media/patient/patient_pics/*
 !media/patient/patient_pics/.gitkeep
 
 reservation/.env
+

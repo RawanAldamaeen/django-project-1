@@ -12,7 +12,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.views.decorators.http import require_http_methods
 from django.views.generic import FormView
 from .forms import PatientForm, LoginForm
-from base.models import User, Patient
+from base.models import User
+from .models import Patient
 from annoying.functions import get_object_or_None
 # Create your views here.
 from django.urls import reverse

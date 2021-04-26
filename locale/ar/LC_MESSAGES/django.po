@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2021-04-24 20:37+0300\n"
+=======
+"POT-Creation-Date: 2021-04-26 14:03+0300\n"
+>>>>>>> 2167f727999773a0c5d71377868b60d1b9d536ce
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +22,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: doctors/models/doctor.py:18
+msgid "Male"
+msgstr "ذكر"
+
+#: doctors/models/doctor.py:18
+msgid "Female"
+msgstr "أنثى"
+
+#: doctors/models/doctor.py:20
+msgid "Arabic"
+msgstr "العربية"
+
+#: doctors/models/doctor.py:20
+msgid "English"
+msgstr "الإنجليزية"
+
+#: doctors/models/doctor.py:32
+msgid "Thank you for registering with us"
+msgstr "شكرٌا لتسجيلك معنا"
+
+#: doctors/models/doctor.py:33
+msgid "Hello, thank you for registering in the reservations system. your account will be activated soon by the admin."
+msgstr "مرحبًأ، شكرًا لتسجيلك في نظام الحجز, حسابك سيتم تفعيله قريبًأ"
 
 #: templates/base/base.html:16 templates/base/index.html:9
 msgid "Reservations System"
@@ -154,24 +182,6 @@ msgstr "حذف"
 #~ msgstr "شكرًا لتسجيلك معنا"
 
 #, fuzzy
-#~| msgid ""
-#~| "Hi Dr. {instance.username}, thank you for registering in the "
-#~| "reservations system. your account "
-#~ msgid ""
-#~ "Hi Dr. %(username)s, thank you for registering in the reservations "
-#~ "system. your account will be activated soon by the admin."
-#~ msgstr ""
-#~ "مرحبًا دكتور %(username)s، شكرًا لك على تسجيلك في نظام الحجز. حسابك سيتم "
-#~ "تفعيله قريبا "
-
-#, fuzzy
-#~| msgid "New Doctor:"
 #~ msgid "New Doctor Account "
-#~ msgstr "دكتور جديد؟"
-
-#~ msgid ""
-#~ "Hi admin , there is new doctor registration account need to check and "
-#~ "activate / username: %(username)s"
-#~ msgstr ""
-#~ "مرحبًا admin ،  هناك حساب دكتور جديد يحتاج الى تفعيل / اسم الحساب:  "
-#~ "%(username)s "
+#~ msgstr "حساب دكتور جديد"
+>>>>>>> 2167f727999773a0c5d71377868b60d1b9d536ce
