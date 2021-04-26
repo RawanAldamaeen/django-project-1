@@ -71,11 +71,11 @@ def doctor_login(request):      # Doctor login request handler
         print("Someone tried to login and failed.")
         print("They used username:".format(username))
         messages.error(request, "Invalid login details given")
-        return redirect(request.path)
+        return redirect('/doctor/login')
 
     if not user.is_active:
         messages.error(request, "Your account still inactive, Admin will active it soon.")
-        return redirect(request.path)
+        return redirect('/doctor/login')
 
     login(request, user)
     return HttpResponseRedirect(reverse('base:index'))

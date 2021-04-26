@@ -23,7 +23,7 @@ class DocForm(forms.ModelForm):
 
     class Meta:
         model = Doctor
-        fields = ('name', 'phone', 'photo', 'degree_copy', 'gender')
+        fields = ('name', 'phone', 'photo', 'degree_copy', 'gender', 'language')
 
     def clean_email(self):
         data = self.cleaned_data['email']
