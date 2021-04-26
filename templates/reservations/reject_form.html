@@ -1,0 +1,20 @@
+
+{% extends "base/base.html" %}
+{% block body_block %}
+
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Rejection Reason</legend>
+            <h2>Enter the rejection reason for the reservation :{{ object.patient_id.name }}</h2>
+        </fieldset>
+        <div class="form-group">
+            <input type="text" name="rejection_reason">
+            <button class="btn btn-outline-danger" type="submit">Confirm Rejection</button>
+            <a class="btn btn-outline-secondary" href="{% url 'reservations:reservations_list' %}">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock body_block %}

@@ -59,8 +59,8 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
             end = datetime.strptime(doctor_shifts.end_time, '%I:%M %p')
             print(end.time())
             reservations = Reservation.objects.filter(doctor_id=doctor)
-            free = True
             for x in reservations:
+                free = True
                 while start < end:
                     # Check the time of the reservation in the shifts range
                     if x.time < start.time() or x.time > end.time():
@@ -83,8 +83,8 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
                 reservation.save()
                 # Doctor New Reservation notify email
                 subject = f'New Reservation for {reservation.patient_id.name}'
-                message = f'Hello Dr. {reservation.doctor_id.name}/' \
-                          f'THere is New reservation on {reservation.date}, at {reservation.time} for patinent : {reservation.patient_id.name},/' \
+                message = f'Hello Dr. {reservation.doctor_id.name}' \
+                          f'THere is New reservation on {reservation.date}, at {reservation.time} for patinent : {reservation.patient_id.name},' \
                           f' go to your Reservations and take action with it'
 
                 send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.doctor_id.user.email])
@@ -97,14 +97,37 @@ def reservationStatusChange(request, reservation_id):  # Reservation change stat
 
     reservation = Reservation.objects.get(id=reservation_id)
     if 'confirm' in request.POST:
+
         reservation.status = "confirm"
-    elif 'cancel' in request.POST:
-        reservation.status = 'canceled'
+        subject = f'Your Reservation is confirmed'
+        message = f'Hello {reservation.patient_id.name}' \
+                  f'Your reservation on {reservation.date}, at {reservation.time} with Doctor : {reservation.doctor_id.name}' \
+                  f'is approved, make sure to be on the hospital 10 min before the time'
+
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.patient_id.user.email])
+
     elif 'complete' in request.POST:
         reservation.status = 'closed'
 
     reservation.save()
     return redirect('reservations:reservations_list')
+
+
+def rejection_view(request, reservation_id):  # Reservation change status view
+    if request.method == "POST":
+        reservation = Reservation.objects.get(id=reservation_id)
+        reservation.status = 'canceled'
+        reservation.rejection_reason = request.POST.get('rejection_reason')
+
+        subject = f'Your Reservation Rejected'
+        message = f'Hello {reservation.patient_id.name}' \
+                  f'Your reservation on {reservation.date}, at {reservation.time} with Doctor : {reservation.doctor_id.name}' \
+                  f'is Rejected for the following reason: {reservation.rejection_reason}'
+
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.patient_id.user.email])
+
+        reservation.save()
+    return render(request, 'reservations/reject_form.html')
 
 
 def reservations_search(request):  # Reservations search view
