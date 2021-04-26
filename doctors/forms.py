@@ -1,5 +1,6 @@
 from django import forms
-from base.models import Doctor , Specialty
+from .models.doctor import Doctor
+from .models.specialty import Specialty
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -15,7 +16,7 @@ class DocForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(),
                                validators=[validate_password])
     name = forms.CharField(validators=[validators.MinLengthValidator(2)])
-    phone = forms.IntegerField()
+    phone = forms.CharField()
     photo = forms.ImageField()
     degree_copy = forms.ImageField()
     specialty = forms.ModelChoiceField(queryset=Specialty.objects.all())
@@ -38,18 +39,16 @@ class DocForm(forms.ModelForm):
     def clean_phone(self):
         phone = self.cleaned_data['phone']
 
-        if int(phone):
+        if phone:
             min_length = 9
             max_length = 12
-            ph_length = str(phone)
-            if len(ph_length) < min_length or len(ph_length) > max_length:
+            if len(phone) < min_length or len(phone) > max_length:
                 raise ValidationError('Phone number length not valid')
 
         if Doctor.objects.filter(phone=phone).count() > 0:
             raise forms.ValidationError("We have a user with this user phone")
 
         return phone
-
 
 class LoginForm(forms.ModelForm):
 
@@ -60,3 +59,4 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
