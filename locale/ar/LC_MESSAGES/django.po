@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-26 14:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: doctors/models/doctor.py:18
+msgid "Male"
+msgstr "ذكر"
+
+#: doctors/models/doctor.py:18
+msgid "Female"
+msgstr "أنثى"
+
+#: doctors/models/doctor.py:20
+msgid "Arabic"
+msgstr "العربية"
+
+#: doctors/models/doctor.py:20
+msgid "English"
+msgstr "الإنجليزية"
+
+#: doctors/models/doctor.py:32
+msgid "Thank you for registering with us"
+msgstr "شكرٌا لتسجيلك معنا"
+
+#: doctors/models/doctor.py:33
+msgid "Hello, thank you for registering in the reservations system. your account will be activated soon by the admin."
+msgstr "مرحبًأ، شكرًا لتسجيلك في نظام الحجز, حسابك سيتم تفعيله قريبًأ"
+
+#: templates/base/base.html:16 templates/base/index.html:9
+msgid "Reservations System"
+msgstr "نظام الحجز"
+
+#: templates/base/base.html:19
+msgid "Hi"
+msgstr "مرحبًأ"
+
+#: templates/base/index.html:10
+msgid "New Doctor:"
+msgstr "دكتور جديد؟"
+
+#: templates/base/index.html:11
+msgid "Doctor Registration"
+msgstr "تسجيل دكنور جديد"
+
+#: templates/doctor/register.html:9
+msgid "Thank you for registering!"
+msgstr "شكرًا لتسجيلك معنا"
+
+#: templates/doctor/register.html:11
+msgid "Register Here"
+msgstr "سجل هنا"
+
+#: templates/doctor/register.html:12
+msgid "Just fill out the form."
+msgstr "املأ النموذج"
+
+#: templates/doctor/register.html:21
+msgid "Already Have An Account?"
+msgstr "لديك حساب؟"
+
+#: templates/doctor/register.html:21
+msgid "Sign In"
+msgstr "سجل"
+
+#, fuzzy
+#~| msgid "Thank you for registering!"
+#~ msgid "Thank you for registering with us"
+#~ msgstr "شكرًا لتسجيلك معنا"
+
+#, fuzzy
+#~ msgid "New Doctor Account "
+#~ msgstr "حساب دكتور جديد"
