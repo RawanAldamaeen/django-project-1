@@ -19,10 +19,11 @@ class NewShifts(forms.ModelForm):
 
         start_time = cleaned_data.get('start_time')
         end_time = cleaned_data.get('end_time')
-        print('test')
+        print(start_time)
+
         if start_time and end_time:
-            start = datetime.strptime(start_time, '%H:%M %p')
-            end = datetime.strptime(end_time, '%H:%M %p')
+            start = datetime.strptime(start_time, '%I:%M %p')
+            end = datetime.strptime(end_time, '%I:%M %p')
 
             if start > end:
                 self._errors['start_time'] = self.error_class([

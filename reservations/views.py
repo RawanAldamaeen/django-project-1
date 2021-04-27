@@ -1,13 +1,15 @@
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
-from django.views.generic import ListView
+from django.views.generic import ListView, FormView
 from .models import Reservation
-from base.models import Doctor, Patient
+from patient.models import Patient
+from doctors.models.doctor import Doctor
 from .forms import NewReservation
 from datetime import datetime, timedelta
 from shifts.models import Shifts
@@ -34,6 +36,16 @@ class PatientReservationsListView(ListView):  # Patient reservations list view
     model = Reservation
     context_object_name = "reservations"
     template_name = 'reservations/patient_reservations_list.html'
+
+
+def reservations_create_view(request, doctor_id):  # Doctors login view
+    obj = get_object_or_None(Doctor, id=doctor_id)
+    if not obj:
+        raise Http404('Doctor not found')
+
+    form = NewReservation()
+    doctor = Doctor.objects.get(id=doctor_id)
+    return render(request,'reservations/reservation_form.html', {'doctor': doctor, 'form': form})
 
 
 @require_http_methods(["POST"])
@@ -63,8 +75,8 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
     end = datetime.strptime(doctor_shifts.end_time, '%I:%M %p')
     print(end.time())
     reservations = Reservation.objects.filter(doctor_id=doctor)
+    free = False
     for x in reservations:
-        free = True
         while start < end:
             # Check the time of the reservation in the shifts range
             if x.time < start.time() or x.time > end.time():
@@ -74,11 +86,13 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
                 return redirect(request.path)
                 break
             # Check if the time of the reservations isn't conflict with other reservations
-            if x.time == reservation.time and x.status == 'confirm':
+            elif x.time == reservation.time and x.status == 'confirm':
                 free = False
                 messages.error(request, 'Doctor is unavailable on this time, please choose another hour')
                 return redirect(request.path)
                 break
+            else:
+                free = True
             start += timedelta(hours=1)
 
     if free is True:
@@ -92,6 +106,9 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
                   f' go to your Reservations and take action with it'
 
         send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.doctor_id.user.email])
+        return redirect('/')
+
+    # return HttpResponseRedirect(reverse('base:index'))
 
     return render(request, 'reservations/reservation_form.html', {'form': form})
 

@@ -100,14 +100,17 @@ def patient_login(request):      # patient login request handler
 
     if not user:
         print("Someone tried to login and failed.")
-        print("They used username:".format(username))
-        return HttpResponse("Invalid login details given")
+        print("They used username:".format(reusername))
+        messages.error(request, "Invalid login details given")
+        return redirect('/patient/login')
 
     if not user.is_active:
-        return HttpResponse("Your account still inactive,check your email for activate email")
+        messages.error(request, "Your account still inactive,check your email for activate email")
+        return redirect('/patient/login')
 
     if not user.is_patient:
-        return HttpResponse("<h3>This page for patient login<h3>")
+        messages.error(request, "This page for patient login")
+        return redirect('/patient/login')
 
     login(request, user)
     return HttpResponseRedirect(reverse('reservations:doctors_list'))

@@ -1,5 +1,6 @@
 from django.db import models
-from base.models import Doctor, Patient
+from doctors.models.doctor import Doctor
+from patient.models import Patient
 
 
 class Reservation(models.Model):

@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView, FormView
 )
 from .models import Shifts
-from base.models import Doctor
+from doctors.models.doctor import Doctor
 from .forms import NewShifts
 
 
