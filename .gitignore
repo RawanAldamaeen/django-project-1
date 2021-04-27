@@ -1,7 +1,6 @@
 venv/*
 .idea/*
 
-reservation/__pycache__/*
 
 base/__pycache__/*
 doctors/__pycache__/*
@@ -16,6 +15,8 @@ shifts/migrations/__pycache__/*
 reservations/migrations/__pycache__/*
 
 
+doctors/models/__pycache__/*
+
 media/doctors/dr_degree_copy/*
 media/doctors/dr_pics/*
 media/patient/patient_pics/*
@@ -24,3 +25,7 @@ media/patient/patient_pics/*
 !media/doctors/dr_pics/.gitkeep
 !media/doctors/dr_degree_copy/.gitkeep
 !media/patient/patient_pics/.gitkeep
+
+
+reservation/.env
+

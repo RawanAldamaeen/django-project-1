@@ -9,7 +9,9 @@ from django.views.generic import (
     CreateView, FormView,
 )
 from .models import Reservation
-from base.models import Doctor, Patient
+from doctors.models.doctor import Doctor
+from patient.models import Patient
+
 from .forms import NewReservation
 
 
@@ -32,6 +34,7 @@ class PatientReservationsListView(ListView):  # Patient reservations list view
     template_name = 'reservations/patient_reservations_list.html'
 
 
+@require_http_methods(['POST'])
 def rservationsCreate(request, doctor_id):  # Reservations create view
     print(request.POST)
     form = NewReservation(data=request.POST)

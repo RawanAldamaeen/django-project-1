@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView, FormView
 )
 from .models import Shifts
-from base.models import Doctor
+from doctors.models.doctor import Doctor
 from .forms import NewShifts
 
 
@@ -30,12 +30,13 @@ def shifts_create(request):  # Create new Shift request handler
     if form.is_valid():
         shift = form.save(commit=False)
         shift.doctor_id = request.user.doctor
+        shift.save()
+
         print(request.POST)
         if 'add_new' in request.POST:
-            redirect('/shifts/new')
+            return redirect(reverse('shifts:shift_create_view'))
         else:
-            redirect("/shifts/")
-        shift.save()
+            return redirect(reverse('shifts:shifts_list'))
 
     else:
         print(form.errors)
