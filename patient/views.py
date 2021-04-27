@@ -2,8 +2,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail, EmailMessage
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text, force_bytes, DjangoUnicodeDecodeError
@@ -12,7 +12,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.views.decorators.http import require_http_methods
 from django.views.generic import FormView
 from .forms import PatientForm, LoginForm
-from base.models import User, Patient
+from base.models import User
+from .models import Patient
 from annoying.functions import get_object_or_None
 # Create your views here.
 from django.urls import reverse
@@ -34,37 +35,37 @@ class RegistraionView(FormView):  # patient registration view
 def register(request):  # patient registration request handler
     registered = False
     form = PatientForm(request.POST, request.FILES)
-    if form.is_valid():
-        user = User()
-        user.email = request.POST.get('email')
-        user.username = request.POST.get('username')
-        user.set_password(request.POST.get('password'))
-        user.is_patient = True
-        user.is_active = False
-        user.save()
-        patient = Patient()
-        patient = form.save(commit=False)
-        patient.user = user
-        patient.save()
-        registered = True
 
-        # patient activation email
-        current_site = get_current_site(request)
-        subject = 'Activate Your Account'
-        message = render_to_string('patient/account_activation_email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': account_activation_token.make_token(user),
-        })
-
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
-
-    else:
+    if not form.is_valid():
         print(form.errors)
+        redirect(request.path)
 
-    return render(request, 'patient/register.html', {'form': form,
-                                                     'registered': registered})
+    user = User()
+    user.email = request.POST.get('email')
+    user.username = request.POST.get('username')
+    user.set_password(request.POST.get('password'))
+    user.is_patient = True
+    user.is_active = False
+    user.save()
+    patient = Patient()
+    patient = form.save(commit=False)
+    patient.user = user
+    patient.save()
+    registered = True
+
+    # patient activation email
+    # current_site = get_current_site(request)
+    # subject = 'Activate Your Account'
+    # message = render_to_string('patient/account_activation_email.html', {
+    #     'user': user,
+    #     'domain': current_site.domain,
+    #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+    #     'token': account_activation_token.make_token(user),
+    # })
+    #
+    # send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+
+    return redirect(reverse('base:index'))
 
 
 def activate(request, uidb64, token):  # patient activation check
@@ -100,13 +101,16 @@ def patient_login(request):      # patient login request handler
     if not user:
         print("Someone tried to login and failed.")
         print("They used username:".format(username))
-        return HttpResponse("Invalid login details given")
+        messages.error(request, "Invalid login details given")
+        return redirect('/patient/login')
 
     if not user.is_active:
-        return HttpResponse("Your account still inactive,check your email for activate email")
+        messages.error(request, "Your account still inactive,check your email for activate email")
+        return redirect('/patient/login')
 
     if not user.is_patient:
-        return HttpResponse("<h3>This page for patient login<h3>")
+        messages.error(request, "This page for patient login")
+        return redirect('/patient/login')
 
     login(request, user)
     return HttpResponseRedirect(reverse('base:index'))

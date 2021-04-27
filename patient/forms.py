@@ -1,5 +1,5 @@
 from django import forms
-from base.models import Patient
+from .models import Patient
 from django.contrib.auth.password_validation import validate_password
 from django.core import validators
 from django.core.exceptions import ValidationError
@@ -15,12 +15,12 @@ class PatientForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(),
                                validators=[validate_password])
     name = forms.CharField(validators=[validators.MinLengthValidator(2)])
-    phone = forms.IntegerField()
+    phone = forms.CharField()
     photo = forms.ImageField()
 
     class Meta:
         model = Patient
-        fields = ('name', 'phone', 'photo', 'gender')
+        fields = ('name', 'phone', 'photo', 'gender', 'language')
 
     def clean_email(self):
         data = self.cleaned_data['email']
@@ -36,11 +36,10 @@ class PatientForm(forms.ModelForm):
     def clean_phone(self):
         phone = self.cleaned_data['phone']
 
-        if int(phone):
+        if phone:
             min_length = 9
             max_length = 12
-            ph_length = str(phone)
-            if len(ph_length) < min_length or len(ph_length) > max_length:
+            if len(phone) < min_length or len(phone) > max_length:
                 raise ValidationError('Phone number length not valid')
 
         if Patient.objects.filter(phone=phone).count() > 0:

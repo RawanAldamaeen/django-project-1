@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-22 16:33+0300\n"
+"POT-Creation-Date: 2021-04-26 14:03+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,37 +19,29 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: base/models.py:57
-#, fuzzy
-#| msgid "Thank you for registering!"
+#: doctors/models/doctor.py:18
+msgid "Male"
+msgstr "ذكر"
+
+#: doctors/models/doctor.py:18
+msgid "Female"
+msgstr "أنثى"
+
+#: doctors/models/doctor.py:20
+msgid "Arabic"
+msgstr "العربية"
+
+#: doctors/models/doctor.py:20
+msgid "English"
+msgstr "الإنجليزية"
+
+#: doctors/models/doctor.py:32
 msgid "Thank you for registering with us"
-msgstr "شكرًا لتسجيلك معنا"
+msgstr "شكرٌا لتسجيلك معنا"
 
-#: base/models.py:58
-#, fuzzy, python-format
-#| msgid ""
-#| "Hi Dr. {instance.username}, thank you for registering in the reservations "
-#| "system. your account "
-msgid ""
-"Hi Dr. %(username)s, thank you for registering in the reservations system. "
-"your account will be activated soon by the admin."
-msgstr ""
-"مرحبًا دكتور %(username)s، شكرًا لك على تسجيلك في نظام الحجز. حسابك سيتم "
-"تفعيله قريبا "
-
-#: base/models.py:66
-#, fuzzy
-#| msgid "New Doctor:"
-msgid "New Doctor Account "
-msgstr "دكتور جديد؟"
-
-#: base/models.py:67
-msgid ""
-"Hi admin , there is new doctor registration account need to check and "
-"activate / username: %(username)s"
-msgstr ""
-"مرحبًا admin ،  هناك حساب دكتور جديد يحتاج الى تفعيل / اسم الحساب:  "
-"%(username)s "
+#: doctors/models/doctor.py:33
+msgid "Hello, thank you for registering in the reservations system. your account will be activated soon by the admin."
+msgstr "مرحبًأ، شكرًا لتسجيلك في نظام الحجز, حسابك سيتم تفعيله قريبًأ"
 
 #: templates/base/base.html:16 templates/base/index.html:9
 msgid "Reservations System"
@@ -131,3 +123,12 @@ msgstr "سجل"
 #: templates/patient/account_activation_email.html:5
 msgid "Please click on the link below to confirm your registration:"
 msgstr "من فضلك اضغط على الرابط المرفق لتفعيل حسابك:"
+
+#, fuzzy
+#~| msgid "Thank you for registering!"
+#~ msgid "Thank you for registering with us"
+#~ msgstr "شكرًا لتسجيلك معنا"
+
+#, fuzzy
+#~ msgid "New Doctor Account "
+#~ msgstr "حساب دكتور جديد"
