@@ -51,8 +51,7 @@ def register(request):      # Doctor registration request handler
 
     registered = True
 
-    return render(request, 'doctor/register.html', {'form': form,
-                                                    'registered': registered})
+    return redirect('/')
 
 
 class LoginView(FormView):  # Doctors login view
