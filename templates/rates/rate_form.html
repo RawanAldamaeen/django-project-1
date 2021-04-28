@@ -1,0 +1,18 @@
+
+{% extends "base/base.html" %}
+{% block body_block %}
+
+<div class="content-section">
+    <form method="POST" action="{% url 'rates:rate-form' reservation_id=reservation.id %}">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Rate:</legend>
+        </fieldset>
+        {{ form.as_p }}
+        <div class="form-group">
+          <button class="btn btn-outline-danger" type="submit">Rate</button>
+        </div>
+    </form>
+</div>
+
+{% endblock body_block %}

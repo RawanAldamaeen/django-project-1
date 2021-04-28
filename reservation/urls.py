@@ -22,6 +22,7 @@ from doctors import views
 from shifts import views
 from reservations import views
 from patient import views
+from rates import views
 from base import views
 from django.conf.urls.i18n import i18n_patterns
 
@@ -39,6 +40,7 @@ urlpatterns += i18n_patterns(
     url(r'^patient/', include(('patient.urls', 'patient'), namespace="patient")),
     url(r'^shifts/', include(('shifts.urls', 'shifts'), namespace="shifts")),
     url(r'^reservation/', include(('reservations.urls', 'reservations'), namespace="reservations")),
+    url(r'^rates/', include(('rates.urls', 'rate'), namespace="rate")),
 )
 
 if settings.DEBUG:

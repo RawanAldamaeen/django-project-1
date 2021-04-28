@@ -1,4 +1,5 @@
 from annoying.functions import get_object_or_None
+from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404
@@ -8,7 +9,6 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 from reservations.models import Reservation
 
-from reservation.reservation import settings
 
 
 class ReservationListView(ListView):  # All reservations list view

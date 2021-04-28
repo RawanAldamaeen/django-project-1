@@ -7,13 +7,14 @@ doctors/__pycache__/*
 reservations/__pycache__/*
 shifts/__pycache__/*
 patient/__pycache__/*
-
+rates/__pycache__/*
 
 patient/migrations/__pycache__/*
 doctors/migrations/__pycache__/*
 base/migrations/__pycache__/*
 shifts/migrations/__pycache__/*
 reservations/migrations/__pycache__/*
+rates/migrations/__pycache__/*
 reservations/views/__pycache__/*
 
 

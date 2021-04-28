@@ -10,6 +10,9 @@
            <tr>
                <td><h2>{{ reservation.doctor_id.name }} </h2></td>
                <td><h2>{{ reservation.status }} </h2></td>
+               {% if reservation.status == 'closed' %}
+               <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'rate:rate-form-view' reservation.pk %}">Rate</a></td>
+               {% endif %}
            </tr>
            </tbody>
        </table>

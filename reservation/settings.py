@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'doctors',
     'patient',
     'shifts',
-    'reservations'
+    'reservations',
+    'rates'
 ]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]

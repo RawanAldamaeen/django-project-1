@@ -18,7 +18,7 @@ urlpatterns = [
     path('<int:reservation_id>/reject/request', doc_view.rejection_form, name='rejected-form'),
     path('<int:doctor_id>/new', pat_view.reservations_create_view, name='reservation_form_view'),
     path('<int:doctor_id>/new/request', pat_view.rservationsCreate, name='reservation_form'),
-    url(r'^search/$', doc_view.reservations_search(), name='doc_search_result'),
+    url(r'^search/$', doc_view.reservations_search, name='doc_search_result'),
     url(r'^search/$', pat_view.doctors_search, name='patient_search_result'),
 
 
