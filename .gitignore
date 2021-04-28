@@ -13,6 +13,7 @@ doctors/migrations/__pycache__/*
 base/migrations/__pycache__/*
 shifts/migrations/__pycache__/*
 reservations/migrations/__pycache__/*
+reservations/views/__pycache__/*
 
 
 doctors/models/__pycache__/*

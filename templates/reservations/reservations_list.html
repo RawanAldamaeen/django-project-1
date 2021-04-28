@@ -14,23 +14,6 @@
                <tr>
                    <td><h2>{{ reservation.patient_id.name }} </h2></td>
                    <td><h2>{{ reservation.status }} </h2></td>
-                   {% if reservation.status == 'new' %}
-                   <td>
-                       <form method="POST" action="{% url 'reservations:status_change' reservation.pk %}">
-                                       {% csrf_token %}
-                            <input class="btn btn btn-primary" name="confirm" type='submit' value="Confirm" />
-                            <input class="btn btn btn-danger" name="cancel" type='submit' value='Cancel' />
-                       </form>
-                   </td>
-                   {% elif reservation.status == "confirm" %}
-                   <td>
-                       <form method="POST" action="{% url 'reservations:status_change' reservation.pk %}">
-                                       {% csrf_token %}
-                   <input class="btn btn-outline-info" name="cancel" type='submit' value='Cancel' />
-                   <input class="btn btn btn-success" name="complete" type='submit' value='Complete' />
-                       </form>
-                   </td>
-                   {% endif %}
                </tr>
                </tbody>
            </table>
