@@ -9,6 +9,12 @@
       <form method="post" action="{% url 'doctor:login' %}">
           {% csrf_token %}
             {{ form.as_p }}
+             {% for message in messages %}
+                    <div class="alert alert-success">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+                        {{ message }}
+                    </div>
+            {% endfor %}
                     <input type="submit" name="" value="Login">
       </form>
         <div class="border-top pt-3">

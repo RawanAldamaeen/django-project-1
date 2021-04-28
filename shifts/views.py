@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView, FormView
 )
 from .models import Shifts
-from base.models import Doctor
+from doctors.models.doctor import Doctor
 from .forms import NewShifts
 
 
@@ -26,20 +26,21 @@ class ShiftsFormView(FormView):     # Create new shift view
 @require_http_methods(["POST"])
 def shifts_create(request):  # Create new Shift request handler
     form = NewShifts(data=request.POST)
-    if form.is_valid():
-        shift = form.save(commit=False)
-        shift.doctor_id = request.user.doctor
-        print(request.POST)
-        if 'add_new' in request.POST:
-            redirect('/shifts/new')
-        else:
-            redirect("/shifts/")
-        shift.save()
 
-    else:
+    if not form.is_valid():
         print(form.errors)
+        return redirect(reverse('shifts:shift_create_view'))
 
-    return render(request, 'shifts/shifts_form.html', {'form': form})
+    shift = form.save(commit=False)
+    shift.doctor_id = request.user.doctor
+    shift.save()
+
+    if 'Save and add another' in request.POST:
+        return redirect(reverse('shifts:shift_create_view'))
+    elif 'Save' in request.POST:
+        return redirect(reverse('shifts:shifts_list'))
+
+    return redirect(reverse('shifts:shift_create_view'), {'form': form})
 
 
 class ShiftsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  # Shifts update view

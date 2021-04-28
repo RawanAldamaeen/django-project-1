@@ -1,8 +1,5 @@
-from datetime import datetime, time
-
+from datetime import datetime
 from django import forms
-from django.http import Http404
-
 from .models import Shifts
 
 
@@ -19,13 +16,12 @@ class NewShifts(forms.ModelForm):
 
         start_time = cleaned_data.get('start_time')
         end_time = cleaned_data.get('end_time')
-        print('test')
+
         if start_time and end_time:
-            start = datetime.strptime(start_time, '%H:%M %p')
-            end = datetime.strptime(end_time, '%H:%M %p')
+            start = datetime.strptime(start_time, '%I:%M %p')
+            end = datetime.strptime(end_time, '%I:%M %p')
 
             if start > end:
                 self._errors['start_time'] = self.error_class([
                     'shift start time should be before shift end time'])
-
         return cleaned_data
