@@ -1,8 +1,5 @@
-from datetime import datetime, time
-
+from datetime import datetime
 from django import forms
-from django.http import Http404
-
 from .models import Shifts
 
 
@@ -30,3 +27,4 @@ class NewShifts(forms.ModelForm):
                     'shift start time should be before shift end time'])
 
         return cleaned_data
+

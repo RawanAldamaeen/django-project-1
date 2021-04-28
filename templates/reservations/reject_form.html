@@ -3,7 +3,7 @@
 {% block body_block %}
 
 <div class="content-section">
-    <form method="POST">
+    <form method="POST" action="{% url 'reservations:rejected-form' reservation_id=reservation.id %}">
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Rejection Reason</legend>

@@ -18,4 +18,4 @@ class Shifts(models.Model):
                                     ('Wednesday', 'Wednesday'),
                                     ('Thursday', 'Thursday'),
                                     ('Friday', 'Friday'),
-                                    ('Saturday', 'Saturday')], default=" ", max_length=10)
+                                    ('Saturday', 'Saturday')], default=None, max_length=10)

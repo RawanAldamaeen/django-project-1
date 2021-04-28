@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2021-04-24 20:37+0300\n"
-=======
 "POT-Creation-Date: 2021-04-26 14:03+0300\n"
->>>>>>> 2167f727999773a0c5d71377868b60d1b9d536ce
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,7 +177,7 @@ msgstr "حذف"
 #~ msgid "Thank you for registering with us"
 #~ msgstr "شكرًا لتسجيلك معنا"
 
-#, fuzzy
+
 #~ msgid "New Doctor Account "
 #~ msgstr "حساب دكتور جديد"
->>>>>>> 2167f727999773a0c5d71377868b60d1b9d536ce
+>>>>>>> 72d7bd57b7a663c3909c265d43f38d44415951b6

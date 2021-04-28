@@ -20,7 +20,7 @@ class PatientForm(forms.ModelForm):
 
     class Meta:
         model = Patient
-        fields = ('name', 'phone', 'photo', 'gender','language')
+        fields = ('name', 'phone', 'photo', 'gender', 'language')
 
     def clean_email(self):
         data = self.cleaned_data['email']

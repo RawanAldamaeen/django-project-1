@@ -3,19 +3,16 @@ from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView
 from .models import Reservation
-from patient.models import Patient
 from doctors.models.doctor import Doctor
+from patient.models import Patient
 from .forms import NewReservation
-from datetime import datetime, timedelta
+from datetime import datetime
 from shifts.models import Shifts
 from annoying.functions import get_object_or_None
-from django.utils.translation import gettext as _
-from django.utils import translation
 from reservation import settings
 
 
@@ -45,18 +42,17 @@ def reservations_create_view(request, doctor_id):  # Doctors login view
 
     form = NewReservation()
     doctor = Doctor.objects.get(id=doctor_id)
-    return render(request,'reservations/reservation_form.html', {'doctor': doctor, 'form': form})
+    return render(request, 'reservations/reservation_form.html', {'doctor': doctor, 'form': form})
 
 
 @require_http_methods(["POST"])
 def rservationsCreate(request, doctor_id):  # Reservations create view
-
     form = NewReservation(data=request.POST)
     doctor = Doctor.objects.get(id=doctor_id)
-
+    print(doctor.id)
     if not form.is_valid():
         print(form.errors)
-        return redirect('/reservation/')
+        return redirect(reverse('reservation:reservation_form_view', kwargs={'doctor_id': doctor_id}))
 
     reservation = form.save(commit=False)
     reservation.patient_id = request.user.patient
@@ -64,41 +60,43 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
 
     # Check doctor available day
     day = datetime.strftime(reservation.date, "%A")
-    doctor_shifts = get_object_or_None(Shifts, day=day, doctor_id=doctor)
+    print(day)
+    doctor_shifts = get_object_or_None(Shifts, day=day, doctor_id=doctor.id)
+    print(doctor_shifts)
     if doctor_shifts is None:
+        print('inside day if')
         messages.error(request, 'Doctor is unavailable on this day, please choose another day')
-        return redirect(request.path)
+        return redirect(reverse('reservation:reservation_form_view', kwargs={'doctor_id': doctor_id}))
 
     # Check doctor available time
-    start = datetime.strptime(doctor_shifts.start_time, '%I:%M %p')
-    print(start.time())
-    end = datetime.strptime(doctor_shifts.end_time, '%I:%M %p')
-    print(end.time())
-    reservations = Reservation.objects.filter(doctor_id=doctor)
+    # 1- check if the reservation time in the doctor shift range
     free = False
+    start = datetime.strptime(doctor_shifts.start_time, '%I:%M %p')
+    end = datetime.strptime(doctor_shifts.end_time, '%I:%M %p')
+    print(reservation.time)
+    if reservation.time < start.time() or reservation.time > end.time():
+        print('inside first if')
+        free = False
+        messages.error(request, 'Doctor is unavailable on this time, please choose another time')
+        return redirect(reverse('reservation:reservation_form_view', kwargs={'doctor_id': doctor_id}))
+
+    # 2- Check if the time of the reservations isn't conflict with other reservations
+    reservations = Reservation.objects.filter(doctor_id=doctor)
+    print(reservations)
+    if not reservations:
+        free = True
     for x in reservations:
-        while start < end:
-            # Check the time of the reservation in the shifts range
-            if x.time < start.time() or x.time > end.time():
-                print(x.time)
-                free = False
-                messages.error(request, 'Doctor is unavailable on this time, please choose another time')
-                return redirect(request.path)
-                break
-            # Check if the time of the reservations isn't conflict with other reservations
-            elif x.time == reservation.time and x.status == 'confirm':
-                free = False
-                messages.error(request, 'Doctor is unavailable on this time, please choose another hour')
-                return redirect(request.path)
-                break
-            else:
-                free = True
-            start += timedelta(hours=1)
+        if not x.time == reservation.time and not x.status == 'confirm' and not x.date == reservation.date:
+            free = True
+        free = False
+        messages.error(request, 'Doctor is unavailable on this time, please choose another hour')
+        return redirect(reverse('reservation:reservation_form_view', kwargs={'doctor_id': doctor_id}))
 
     if free is True:
         print('accepted')
         reservation.status = 'new'
         reservation.save()
+
         # Doctor New Reservation notify email
         subject = f'New Reservation for {reservation.patient_id.name}'
         message = f'Hello Dr. {reservation.doctor_id.name}' \
@@ -106,11 +104,9 @@ def rservationsCreate(request, doctor_id):  # Reservations create view
                   f' go to your Reservations and take action with it'
 
         send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.doctor_id.user.email])
-        return redirect('/')
 
-    # return HttpResponseRedirect(reverse('base:index'))
-
-    return render(request, 'reservations/reservation_form.html', {'form': form})
+    return redirect(reverse('reservation:reservation_form_view', kwargs={'doctor_id': doctor_id}),
+                    {'doctor': doctor, 'form': form})
 
 
 @require_http_methods(["POST"])
@@ -134,21 +130,31 @@ def reservationStatusChange(request, reservation_id):  # Reservation change stat
     return redirect('reservations:reservations_list')
 
 
-def rejection_view(request, reservation_id):  # Reservation change status view
-    if request.method == "POST":
-        reservation = Reservation.objects.get(id=reservation_id)
-        reservation.status = 'canceled'
-        reservation.rejection_reason = request.POST.get('rejection_reason')
+def rejection_form_view(request, reservation_id):  # Doctors login view
+    obj = get_object_or_None(Reservation, id=reservation_id)
+    if not obj:
+        raise Http404('Reservation not found')
 
-        subject = f'Your Reservation Rejected'
-        message = f'Hello {reservation.patient_id.name}' \
-                  f'Your reservation on {reservation.date}, at {reservation.time} with Doctor : {reservation.doctor_id.name}' \
-                  f'is Rejected for the following reason: {reservation.rejection_reason}'
+    reservation = Reservation.objects.get(id=reservation_id)
+    return render(request, 'reservations/reject_form.html', {'reservation': reservation})
 
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.patient_id.user.email])
 
-        reservation.save()
-    return render(request, 'reservations/reject_form.html')
+@require_http_methods(["POST"])
+def rejection_form(request, reservation_id):  # Reservation change status view
+    reservation = Reservation.objects.get(id=reservation_id)
+    reservation.status = 'canceled'
+    reservation.rejection_reason = request.POST.get('rejection_reason')
+
+    subject = f'Your Reservation Rejected'
+    message = f'Hello {reservation.patient_id.name}' \
+              f'Your reservation on {reservation.date}, at {reservation.time} with Doctor : {reservation.doctor_id.name}' \
+              f'is Rejected for the following reason: {reservation.rejection_reason}'
+
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [reservation.patient_id.user.email])
+
+    reservation.save()
+    return redirect(reverse('reservation:rejected-form-view', kwargs={'reservation_id': reservation_id}),
+                    {'reservation': reservation})
 
 
 def reservations_search(request):  # Reservations search view
