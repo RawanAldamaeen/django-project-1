@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
@@ -52,8 +51,7 @@ def register(request):      # Doctor registration request handler
 
     registered = True
 
-    return render(request, 'doctor/register.html', {'form': form,
-                                                    'registered': registered})
+    return redirect('/')
 
 
 class LoginView(FormView):  # Doctors login view

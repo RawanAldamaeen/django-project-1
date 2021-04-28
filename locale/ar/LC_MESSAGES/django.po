@@ -180,4 +180,3 @@ msgstr "حذف"
 
 #~ msgid "New Doctor Account "
 #~ msgstr "حساب دكتور جديد"
->>>>>>> 72d7bd57b7a663c3909c265d43f38d44415951b6
