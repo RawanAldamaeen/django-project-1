@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
@@ -6,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import (
     ListView,
     UpdateView,
-    DeleteView, FormView, CreateView
+    DeleteView, FormView
 )
 from .models import Shifts
 from doctors.models.doctor import Doctor
@@ -28,21 +27,20 @@ class ShiftsFormView(FormView):     # Create new shift view
 def shifts_create(request):  # Create new Shift request handler
     form = NewShifts(data=request.POST)
 
-    if form.is_valid():
-        shift = form.save(commit=False)
-        shift.doctor_id = request.user.doctor
-        shift.save()
-
-        print(request.POST)
-        if 'add_new' in request.POST:
-            return redirect(reverse('shifts:shift_create_view'))
-        else:
-            return redirect(reverse('shifts:shifts_list'))
-
-    else:
+    if not form.is_valid():
         print(form.errors)
+        return redirect(reverse('shifts:shift_create_view'))
 
-    return render(request, 'shifts/shifts_form.html', {'form': form})
+    shift = form.save(commit=False)
+    shift.doctor_id = request.user.doctor
+    shift.save()
+
+    if 'Save and add another' in request.POST:
+        return redirect(reverse('shifts:shift_create_view'))
+    elif 'Save' in request.POST:
+        return redirect(reverse('shifts:shifts_list'))
+
+    return redirect(reverse('shifts:shift_create_view'), {'form': form})
 
 
 class ShiftsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  # Shifts update view
