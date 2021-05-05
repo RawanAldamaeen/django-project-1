@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load i18n %}
+{% block body_block %}
+
+
+<div class="container">
+    <div class="jumbotron">
+      <h1>{% trans 'Login here' %}</h1>
+      <form method="post" action="{% url 'patient:login' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="" value="Login">
+      </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                {% trans 'Need An Account?' %} <a class="ml-2" href="{% url 'patient:register' %}">{% trans 'Sign Up Now' %}</a>
+            </small>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

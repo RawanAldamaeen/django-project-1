@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+{% block body_block %}
+
+
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>{% trans 'Reservations System' %}</h1>
+      <h4>{% trans 'New Doctor:' %}</h4>
+      <a href="{% url 'doctor:registration_view' %}">{% trans 'Doctor Registration' %}</a>
+          <h4>{% trans 'New Patient:' %}</h4>
+      <a href="{% url 'patient:registration_view' %}">{% trans 'Patient Registration' %}</a>
+  </div>
+</div>
+
+{% endblock %}
